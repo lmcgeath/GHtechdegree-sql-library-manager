@@ -1,2 +1,2 @@
 # GHtechdegree-sql-library-manager
- An app that mimics a library checkout system using sql
+An app for checking in/out library books and maintaining them using sql
