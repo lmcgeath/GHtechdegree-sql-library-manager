@@ -1,10 +1,16 @@
+const express = require('express');
 const db = require('./db');
 const { Book } = db.models;
 const { Op } = db.Sequelize;
-const app = require('express')();
+// const app = require('express')();
+const app = express();
 // const routes = require('./routes');
 
 app.set('view engine', 'pug');
+
+// app.use(express.static(path.join(__dirname,"public")));
+
+app.use('/static', express.static('public'));
 
 app.get('/', (req, res) => {
    res.render('index')
