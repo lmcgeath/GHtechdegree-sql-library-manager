@@ -2,17 +2,21 @@ const db = require('./db');
 const { Book } = db.models;
 const { Op } = db.Sequelize;
 const app = require('express')();
-const routes = require('./routes');
+// const routes = require('./routes');
 
-app.use('/', routes);//must redirect to /books
+app.set('view engine', 'pug');
+
+app.get('/', (req, res) => {
+   res.render('index')
+});//must redirect to /books
 
 //Shows the full list of books
 app.get('/books', (req, res) => { 
-   // res.render('books')
+   // res.render('index')
 });
 
 app.get('/books/new', (req, res) => { //Shows the create new book form.
-   // res.render('books')
+   res.render('new-book')
 });
 //Posts a new book to the database. -- not sure if app.post is correct
 app.post('/books/new', (req, res) => { 
@@ -31,6 +35,7 @@ app.post('/books/:id', (req, res) => {
 app.post('/books/:id/delete', (req, res) => { 
    // res.render('books')
 });
+
 
 (async () => {
   await db.sequelize.sync({ force: true });
@@ -122,6 +127,23 @@ app.post('/books/:id/delete', (req, res) => {
    }
  }
 })();
+
+// // Set up a middleware function that returns a 404 NOT FOUND HTTP status code and renders a "Page Not Found" view when the user navigates to a non-existent route, such as /error. See the page_found.html file in the example markup folder for an example of what this would look like.
+
+// //Creates error object if the user direct to a page that doesn't exist -- copied from node project, needs editing
+// app.use((req, res, next) => {
+//    const err = new Error('Not Found')
+//    err.status = 404;
+//    next(err);
+// })
+// //Formats 404 error to be more readable -- copied from node project, needs editing
+// app.use((err, req, res, next) => {
+//    res.locals.error = err;
+//    res.status(err.status);
+//    res.render('error', err);
+//    next(err);
+// });
+
 
 app.listen(3000, () => {
    console.log('App listening on port 3000');
