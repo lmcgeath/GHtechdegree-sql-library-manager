@@ -6,14 +6,17 @@ const { Op } = db.Sequelize;
 const app = express();
 // const routes = require('./routes');
 
-app.set('view engine', 'pug');
+// app.set('views', path.join(__dirname, "views"));
 
-// app.use(express.static(path.join(__dirname,"public")));
-
+// app.set('view engine', 'pug');
+//Not sure if this or '..path.join.. is right
 app.use('/static', express.static('public'));
 
+
+//Routes
 app.get('/', (req, res) => {
-   res.render('index')
+   // res.redirect('/books')
+   // res.render('all_books')
 });//must redirect to /books
 
 //Shows the full list of books
@@ -30,6 +33,7 @@ app.post('/books/new', (req, res) => {
 });
 // Shows book detail form.
 app.get('/books/:id', (req, res) => { 
+   let id = req.params.id;//possibly..
    // res.render('books')
 });
 // Updates book info in the database.
@@ -151,6 +155,6 @@ app.post('/books/:id/delete', (req, res) => {
 // });
 
 
-app.listen(3000, () => {
+app.listen(3002, () => {
    console.log('App listening on port 3000');
 });
