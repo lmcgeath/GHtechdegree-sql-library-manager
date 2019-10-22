@@ -16,12 +16,12 @@ app.use('/static', express.static('public'));
 //Routes
 app.get('/', (req, res) => {
    // res.redirect('/books')
-   // res.render('all_books')
+   res.render('index')
 });//must redirect to /books
 
 //Shows the full list of books
 app.get('/books', (req, res) => { 
-   // res.render('index')
+   res.render('index')
 });
 
 app.get('/books/new', (req, res) => { //Shows the create new book form.
