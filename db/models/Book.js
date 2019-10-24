@@ -49,10 +49,14 @@ module.exports = (sequelize) => {
           msg: 'Please provide a value for "author"',
          }
       },
-    },
-  }, { 
-   paranoid: true, // enable "soft" deletes
-   sequelize });
+    },   
+      deletedAt: {
+         type: Sequelize.DATEONLY,
+         allowNull: true
+      },
+    
+      paranoid: true, // enable "soft" deletes
+      sequelize });
 
   return Book;
-};
+   };

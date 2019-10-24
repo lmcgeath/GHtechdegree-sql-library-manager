@@ -11,8 +11,8 @@ const db = {
   Sequelize,
   models: {},
 };
-
-db.models.Book = require('./models/Book.js')(sequelize);
+//Find out what this code is doing, it throws an error
+// db.models.Book = require('./models/Book.js')(sequelize);
 
 // db.models.Person = require('./models/person.js')(sequelize);
 
