@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
-  class Book extends Sequelize.Model {}
+class Book extends Sequelize.Model {}
   Book.init({
       // Set custom primary key column
     id: {
@@ -22,22 +22,8 @@ module.exports = (sequelize) => {
          }
       },
     },
-   
-    year: {
-      type: Sequelize.DATEONLY,
-      allowNull: false, // disallow null
-      validate: { 
-         notNull: {
-            msg: 'Please provide a value for "year"',
-          },
-      },
-    },
-    genre: {
-      type: Sequelize.INTEGER,
-      allowNull: false, // disallow null
-      defaultValue: false, // set default value
-    },
-     author: {
+
+    author: {
       type: Sequelize.STRING,
       allowNull: false, // disallow null
       validate: { 
@@ -49,14 +35,30 @@ module.exports = (sequelize) => {
           msg: 'Please provide a value for "author"',
          }
       },
-    },   
-      deletedAt: {
-         type: Sequelize.DATEONLY,
-         allowNull: true
+    }, 
+
+    genre: {
+      type: Sequelize.INTEGER,
+      allowNull: false, // disallow null
+      defaultValue: false, // set default value
+    },
+   
+    year: {
+      type: Sequelize.DATEONLY,
+      allowNull: false, // disallow null
+      validate: { 
+         notNull: {
+            msg: 'Please provide a value for "year"',
+          },
       },
+    }, 
+      // deletedAt: {
+      //    type: Sequelize.DATEONLY,
+      //    allowNull: true
+      // },
     
       paranoid: true, // enable "soft" deletes
-      sequelize });
+    },  { sequelize });
 
   return Book;
    };

@@ -1,21 +1,22 @@
 const express = require('express');
 const db = require('./db');
-const  { Book }  = db.models.Book
+const  { Book }  = db.models;
 const { Op } = db.Sequelize;
 const app = express();
 const router = express.Router();
-const Sequelize = require('sequelize');
+// const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize({
-   dialect: 'sqlite',
-   storage: 'library.db',
-   logging: false
- });
+// const sequelize = new Sequelize({
+//    dialect: 'sqlite',
+//    storage: 'library.db',
+//    logging: false
+//  });
 
 // module.exports = router;
 // const routes = require('./routes');
 // app.set('views', path.join(__dirname, "views"));
 
+// ROUTES - MOVE TO SEPARATE FOLDER
 app.set('view engine', 'pug');
 //Not sure if this or '..path.join.. is right
 app.use('/static', express.static('public'));
@@ -30,7 +31,7 @@ app.get('/', (req, res) => {
 
 //Shows the full list of books
 app.get('/books', (req, res) => { 
-   res.render('index')
+   res.render('index', {Book})
 });
 
 app.get('/books/new', (req, res) => { //Shows the create new book form.
@@ -56,38 +57,43 @@ app.post('/books/:id/delete', (req, res) => {
 });
 
 
-(async () => {
-  await db.sequelize.sync();
+// (async () => {
+//   await db.sequelize.sync();
 
-  try {
-   const books = await Book.findAll({
-      attributes: ['id', 'title'],
-      where: {
-        releaseDate: {
-          [Op.gte]: '1812-01-01', // greater than or equal to the date
-        },
-      },
-      order: [['id', 'DESC']] // IDs in descending order
-    })
-    .then(books => {
-      res.json(books)
+//   try {
+//    const book = await Book.create({
+//       title: 'Toy Story'
+//     });
+//     console.log(Book.toJSON());
+
+// //    const books = await Book.findAll({
+// //       attributes: ['id', 'title'],
+// //       where: {
+// //         releaseDate: {
+// //           [Op.gte]: '1812-01-01', // greater than or equal to the date
+// //         },
+// //       },
+// //       order: [['id', 'DESC']] // IDs in descending order
+// //     })
+// //     .then(books => {
+// //       res.json(books)
       
-      .catch(function(err){});
-      return books     
-  });
-   //  console.log( books.map(book => book.toJSON()) );
-   //  console.log(AllBooks)
+// //       .catch(function(err){});
+// //       return books     
+// //   });
+//    //  console.log( books.map(book => book.toJSON()) );
+//    //  console.log(AllBooks)
 
-  } catch (error) {
-   if (error.name === 'SequelizeValidationError') {
-      const errors = error.errors.map(err => err.message);
-      console.error('Validation errors: ', errors);
+//   } catch (error) {
+//    if (error.name === 'SequelizeValidationError') {
+//       const errors = error.errors.map(err => err.message);
+//       console.error('Validation errors: ', errors);
 
-   } else {
-      throw error;
-   }
- }
-})();
+//    } else {
+//       throw error;
+//    }
+//  }
+// })();
 
 // // Set up a middleware function that returns a 404 NOT FOUND HTTP status code and renders a "Page Not Found" view when the user navigates to a non-existent route, such as /error. See the page_found.html file in the example markup folder for an example of what this would look like.
 
