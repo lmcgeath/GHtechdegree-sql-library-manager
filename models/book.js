@@ -1,14 +1,15 @@
+'use strict';
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
-class Book extends Sequelize.Model {}
+  class Book extends Sequelize.Model {}
   Book.init({
-      // Set custom primary key column
-    id: {
-      type: Sequelize.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
+          // Set custom primary key column
+   //  id: {
+   //    type: Sequelize.INTEGER,
+   //    primaryKey: true,
+   //    autoIncrement: true,
+   //  },
    title: {
       type: Sequelize.STRING,
       allowNull: false, // disallow null
@@ -52,10 +53,6 @@ class Book extends Sequelize.Model {}
           },
       },
     }, 
-      // deletedAt: {
-      //    type: Sequelize.DATEONLY,
-      //    allowNull: true
-      // },
     
       paranoid: true, // enable "soft" deletes
     },  { sequelize });

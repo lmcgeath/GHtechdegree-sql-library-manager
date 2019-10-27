@@ -1,117 +1,42 @@
-const express = require('express');
-const db = require('./db');
-const  { Book }  = db.models;
-const { Op } = db.Sequelize;
-const app = express();
-const router = express.Router();
-// const Sequelize = require('sequelize');
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
 
-// const sequelize = new Sequelize({
-//    dialect: 'sqlite',
-//    storage: 'library.db',
-//    logging: false
-//  });
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/books');
 
-// module.exports = router;
-// const routes = require('./routes');
-// app.set('views', path.join(__dirname, "views"));
+var app = express();
 
-// ROUTES - MOVE TO SEPARATE FOLDER
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-//Not sure if this or '..path.join.. is right
-app.use('/static', express.static('public'));
 
-// console.log(Book.title);
-//Routes
-app.get('/', (req, res) => {
-   // res.redirect('/books')
-   res.render('index')
 
-});//must redirect to /books
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-//Shows the full list of books
-app.get('/books', (req, res) => { 
-   res.render('index', {Book})
+app.use('/', indexRouter);
+app.use('/books', usersRouter);//changed from '/users' to '/books'
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
 });
 
-app.get('/books/new', (req, res) => { //Shows the create new book form.
-   res.render('new-book')
-});
-//Posts a new book to the database. -- not sure if app.post is correct
-app.post('/books/new', (req, res) => { 
-   // res.render('books')
-});
-// Shows book detail form.
-app.get('/books/:id', (req, res) => { 
-   let id = req.params.id;//possibly..
-   // res.render('books')
-});
-// Updates book info in the database.
-app.post('/books/:id', (req, res) => { 
-   // res.render('books')
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
 });
 
-//Deletes a book. Careful, this can’t be undone. It can be helpful to create a new “test” book to test deleting.
-app.post('/books/:id/delete', (req, res) => { 
-   // res.render('books')
-});
-
-
-// (async () => {
-//   await db.sequelize.sync();
-
-//   try {
-//    const book = await Book.create({
-//       title: 'Toy Story'
-//     });
-//     console.log(Book.toJSON());
-
-// //    const books = await Book.findAll({
-// //       attributes: ['id', 'title'],
-// //       where: {
-// //         releaseDate: {
-// //           [Op.gte]: '1812-01-01', // greater than or equal to the date
-// //         },
-// //       },
-// //       order: [['id', 'DESC']] // IDs in descending order
-// //     })
-// //     .then(books => {
-// //       res.json(books)
-      
-// //       .catch(function(err){});
-// //       return books     
-// //   });
-//    //  console.log( books.map(book => book.toJSON()) );
-//    //  console.log(AllBooks)
-
-//   } catch (error) {
-//    if (error.name === 'SequelizeValidationError') {
-//       const errors = error.errors.map(err => err.message);
-//       console.error('Validation errors: ', errors);
-
-//    } else {
-//       throw error;
-//    }
-//  }
-// })();
-
-// // Set up a middleware function that returns a 404 NOT FOUND HTTP status code and renders a "Page Not Found" view when the user navigates to a non-existent route, such as /error. See the page_found.html file in the example markup folder for an example of what this would look like.
-
-// //Creates error object if the user direct to a page that doesn't exist -- copied from node project, needs editing
-// app.use((req, res, next) => {
-//    const err = new Error('Not Found')
-//    err.status = 404;
-//    next(err);
-// })
-// //Formats 404 error to be more readable -- copied from node project, needs editing
-// app.use((err, req, res, next) => {
-//    res.locals.error = err;
-//    res.status(err.status);
-//    res.render('error', err);
-//    next(err);
-// });
-
-
-app.listen(3000, () => {
-   console.log('App listening on port 3000');
-});
+module.exports = app;
