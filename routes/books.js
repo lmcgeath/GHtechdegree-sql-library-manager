@@ -48,20 +48,8 @@ router.get('/:id', asyncHandler(async(req, res) => {
       res.render('update-book', { book, title: book.title });      
     } else {
       res.render('error');
-      // res.sendStatus(404);
     }
 }));
-
-/* GET individual book. */
-//will be show book detail
-// router.get("/:id", asyncHandler(async (req, res) => {
-//    const article = await Article.findByPk(req.params.id);
-//    if(article){
-//       res.render("articles/show", { article, title: article.title });
-//    } else {
-//       res.sendStatus(404);
-//    }
-// }));
 
 /* Update a book. */
 router.post('/:id', asyncHandler(async (req, res) => {
@@ -73,28 +61,17 @@ router.post('/:id', asyncHandler(async (req, res) => {
        res.redirect('/books/'); 
      } else {
       res.render('error');
-      //  res.sendStatus(404);
      }
    } catch (error) {
      if(error.name === "SequelizeValidationError") {
        book = await Book.build(req.body);
        book.id = req.params.id; // make sure correct book gets updated
-       res.render('/books/' + book.id, { book, errors: error.errors, title: 'Update Book' })
+       res.render('update-form-error', { book, errors: error.errors, title: 'Update Book' })
      } else {
        throw error;
      }
    }
  }));
-
-// /* Delete article form. */
-// router.get("/:id/delete", asyncHandler(async (req, res) => {
-//    const article = await Article.findByPk(req.params.id);
-//    if(article) {
-//       res.render("articles/delete", { article, title: "Delete Article" });
-//     } else {
-//       res.sendStatus(404);
-//     }
-// }));
 
 /* Delete individual books. */
 router.post('/:id/delete', asyncHandler(async (req ,res) => {
@@ -105,7 +82,6 @@ router.post('/:id/delete', asyncHandler(async (req ,res) => {
       res.redirect('/books');
     } else {
       res.render('error');
-      // res.sendStatus(404);
     }
 }));
 

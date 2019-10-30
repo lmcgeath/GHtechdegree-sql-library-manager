@@ -40,13 +40,7 @@ module.exports = (sequelize) => {
    
     year: {
       type: Sequelize.INTEGER,
-      allowNull: false, // disallow null
-      validate: { 
-         notNull: {
-            msg: 'Please provide a value for "year"',
-          },
-      },
-    }, 
+     } 
    },  { sequelize });
 
   return Book;
